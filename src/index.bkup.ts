@@ -43,25 +43,31 @@ export class NseIndia {
         'Accept-Language': 'en-US,en;q=0.5',
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0',
     }
 
     private async getNseCookies(useSubProcess: boolean = false) {
         try {
             if (this.cookies === '' || this.cookieUsedCount > 10 || this.cookieExpiry <= new Date().getTime()) {
                 var response, setCookies;
-                if (useSubProcess) {
+                if (!useSubProcess) {
 
                     const curlProcess = spawnSync('curl', [
                         '-i',
                         this.baseUrl,
-                        '-H', 'authority: beta.nseindia.com',
-                        '-H', 'cache-control: max-age=0',
-                        '-H', 'dnt: 1',
+                        '-H', 'cache-control: no-cache',
+                        '-H', 'Connection: keep-alive',
                         '-H', 'upgrade-insecure-requests: 1',
-                        '-H', 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36',
-                        '-H', 'accept-encoding: gzip, deflate, br',
-                        '-H', 'accept-language: en-US,en;q=0.9,hi;q=0.8',
+                        '-H', 'user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0',
+                        '-H', 'Accept-Encoding: gzip, deflate, br',
+                        '-H', 'Accept-Language: en-US,en;q=0.5',
+                        '-H', 'Referer: https://www.google.com/',
+                        '-H', 'Sec-Fetch-Dest: document',
+                        '-H', 'Sec-Fetch-Mode: navigate',
+                        '-H', 'Sec-Fetch-Site: cross-site',
+                        '-H', 'Sec-Fetch-User: ?1',
+                        '-H', 'Pragma: no-cache',
+                        '-H', 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
                     ]);
                     const response = curlProcess.stdout.toString();
                     const lines = response.split('\n');
